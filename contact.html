@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me | Showcase</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="swap">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --bg-color: #0f172a;
+            --bg-secondary: #1e293b;
+            --primary: #38bdf8; /* Sky Blue */
+            --secondary: #818cf8; /* Indigo */
+            --accent: #2dd4bf; /* Teal */
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; line-height: 1.2; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- 1. BUBBLES ANIMATION --- */
+        .bubbles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: linear-gradient(to top right, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: floatUp 15s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            position: relative;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background: var(--primary); transition: all 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
+
+        /* --- Main Layout --- */
+        .container {
+            padding: 8rem 5% 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .page-header { text-align: center; margin-bottom: 4rem; }
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to bottom right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .page-header p { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        /* --- Contact Grid --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        /* Left Info */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: var(--glass);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .info-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .info-text h4 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .info-text p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Right Form */
+        .contact-form {
+            background: var(--glass);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        /* --- Toast Notification --- */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent);
+            color: var(--text-main);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #toast.show { transform: translateX(0); }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed; top: 70px; right: -100%; width: 100%; height: calc(100vh - 70px);
+                background: var(--bg-color); flex-direction: column; justify-content: center;
+                transition: 0.3s;
+            }
+            .nav-links.nav-active { right: 0; }
+            .menu-toggle { display: block; }
+            
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. BUBBLES CONTAINER -->
+    <div class="bubbles-container" id="bubbles"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="logo">Neelima<span style="color:white">Konda</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="projects.html">projects</a></li>
+            <!-- Active Page -->
+            <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <div class="page-header">
+            <h1>Get In Touch</h1>
+            <p>Have a project in mind? Let's build something amazing together.</p>
+        </div>
+
+        <div class="contact-grid">
+            
+            <!-- Left: Contact Info -->
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="icon-box"><i class="fas fa-envelope"></i></div>
+                    <div class="info-text">
+                        <h4>Email</h4>
+                        <p>neelimakonda68@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="icon-box"><i class="fas fa-phone"></i></div>
+                    <div class="info-text">
+                        <h4>Phone</h4>
+                        <p>7569740311</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="info-text">
+                        <h4>Location</h4>
+                        <p>Amalapuram</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Contact Form -->
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-control" placeholder="Neelima" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Your Email</label>
+                    <input type="email" class="form-control" placeholder="neelima@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Subject</label>
+                    <input type="text" class="form-control" placeholder="Project Inquiry" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-control" rows="5" placeholder="Tell me about your project..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Send Message</button>
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Toast Notification Element -->
+    <div id="toast">
+        <i class="fas fa-check-circle" style="color: var(--accent);"></i>
+        <span>Message sent successfully!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // --- 1. BUBBLE GENERATION LOGIC ---
+        const bubblesContainer = document.getElementById('bubbles');
+        const bubbleCount = 20;
+
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            const size = Math.random() * 60 + 20 + 'px';
+            const left = Math.random() * 100 + '%';
+            const duration = Math.random() * 10 + 10 + 's';
+            const delay = Math.random() * 5 + 's';
+
+            bubble.style.width = size;
+            bubble.style.height = size;
+            bubble.style.left = left;
+            bubble.style.animationDuration = duration;
+            bubble.style.animationDelay = delay;
+            bubblesContainer.appendChild(bubble);
+        }
+
+        // --- 2. FORM SUBMISSION LOGIC (Toast) ---
+        const contactForm = document.getElementById('contactForm');
+        const toast = document.getElementById('toast');
+        const submitBtn = document.querySelector('.btn-submit');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simulate loading
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                // Show success toast
+                toast.classList.add('show');
+                
+                // Reset form
+                contactForm.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+
+                // Hide toast after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }, 1500);
+        });
+
+        // --- 3. MOBILE MENU ---
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('nav-active');
+            const icon = menuToggle.querySelector('i');
+            if(navLinks.classList.contains('nav-active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+</html>
