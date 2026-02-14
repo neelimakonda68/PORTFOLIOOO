@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Complete Page</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. Basic Colors & Settings --- */
+        :root {
+            --bg-color: #0f172a; /* Dark Blue Background */
+            --text-white: #f1f5f9;
+            --text-gray: #94a3b8;
+            --primary: #38bdf8; /* Sky Blue */
+            --secondary: #818cf8; /* Purple */
+            --glass: rgba(15, 23, 42, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            overflow-x: hidden; 
+        }
+
+        
+        .tech-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px; /* Boxes size */
+        }
+
+        
+        .bubbles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: linear-gradient(to top right, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: floatUp 15s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.3; }
+            80% { opacity: 0.3; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- 4. Header & Navigation --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-gray);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+        }
+
+        /* Mobile Menu Button */
+        .menu-btn {
+            display: none;
+            color: var(--text-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- 5. Main Layout Structure --- */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 5% 50px 5%; /* Header space */
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            width: 100%;
+            gap: 4rem;
+            flex-wrap: wrap; 
+        }
+
+        /* Left Side: Text */
+        .text-section {
+            flex: 1;
+            min-width: 300px;
+            opacity: 0;
+            animation: slideUp 1s forwards 0.5s;
+        }
+
+        .greeting {
+            color: var(--primary);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .bio {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.5);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--border);
+            color: var(--text-white);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Right Side: Photo */
+        .photo-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1.5s forwards 1s;
+        }
+
+        .img-box {
+            position: relative;
+            width: 400px;
+            height: 500px;
+        }
+
+        .img-box::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            z-index: 0;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            background: #1e293b; /* Placeholder color */
+        }
+
+        /* --- 6. Animations Keyframes --- */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- 7. Responsive (Mobile View) --- */
+        @media (max-width: 768px) {
+            nav {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--bg-color);
+                flex-direction: column;
+                align-items: center;
+                display: none; /* Hide by default */
+                padding: 20px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            nav.active {
+                display: flex; /* Show when toggled */
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .main-content {
+                flex-direction: column-reverse; 
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .text-section {
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .img-box {
+                width: 300px;
+                height: 380px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tech Grid Background -->
+    <div class="tech-grid"></div>
+
+    <!-- Animated Bubbles Background -->
+    <div class="bubbles-container" id="bubbles"></div>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo">My<span>Portfolio</span></div>
+        <div class="menu-btn" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <nav id="navbar">
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="skills.html">skills</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                 <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="container">
+        <div class="main-content">
+            
+            <!-- Left Side: Info -->
+            <div class="text-section">
+                <span class="greeting">Hello, I am</span>
+                <!-- EDIT: Ivvale Mee Name -->
+                <h1>Neelima Konda</h1>
+                
+                <!-- EDIT: Ivvale Mee Information -->
+                <p class="bio">
+                    I am a passionate Web Developer and Designer. 
+                    I create beautiful, responsive, and user-friendly websites 
+                    that help businesses grow online.
+                </p>
+
+                <div class="btn-group">
+                    <a href="#" class="btn btn-primary">Hire Me</a>
+                    <a href="C:\Users\neeli\OneDrive\Desktop\portfolio\neelima_resume (1).pdf" class="btn btn-outline">Resume</a>
+                </div>
+            </div>
+
+            <!-- Right Side: Photo Space -->
+            <div class="photo-section">
+                <div class="img-box">
+                    <!-- EDIT: Ivvale Mee Photo URL (place 'src="..."') -->
+                    <img src="C:\Users\neeli\OneDrive\Desktop\portfolio\neeluimage.jpg" alt="Profile Photo" class="profile-img">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 1. Create Bubbles Programmatically
+        const bubblesContainer = document.getElementById('bubbles');
+        const bubbleCount = 15;
+
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            
+            // Random Size
+            const size = Math.random() * 60 + 20 + 'px';
+            // Random Position
+            const left = Math.random() * 100 + '%';
+            // Random Speed
+            const duration = Math.random() * 10 + 10 + 's';
+            // Random Delay
+            const delay = Math.random() * 5 + 's';
+
+            bubble.style.width = size;
+            bubble.style.height = size;
+            bubble.style.left = left;
+            bubble.style.animationDuration = duration;
+            bubble.style.animationDelay = delay;
+
+            bubblesContainer.appendChild(bubble);
+        }
+
+        // 2. Mobile Menu Toggle Logic
+        function toggleMenu() {
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
