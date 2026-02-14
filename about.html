@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | Showcase</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="swap">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --bg-color: #0f172a;
+            --bg-secondary: #1e293b;
+            --primary: #38bdf8;
+            --secondary: #818cf8;
+            --accent: #2dd4bf;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; line-height: 1.2; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- 1. BUBBLES ANIMATION CONTAINER --- */
+        .bubbles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Backgound lo undali */
+            overflow: hidden;
+            pointer-events: none; /* Content click cheyyakunda vundali */
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px; /* Screen kindha nunchi start avutundi */
+            background: linear-gradient(to top right, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.2; /* Bayata light ga kanapadaniki */
+            animation: floatUp 15s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3; /* Start pedatha ga kanapadaniki */
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(360deg); /* Top nunchi poyi pothundi */
+                opacity: 0;
+            }
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            position: relative;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background: var(--primary); transition: all 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
+
+        /* --- Main Layout --- */
+        .container {
+            padding: 8rem 5% 4rem 5%; 
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2; /* Content bubbles meedha vundali */
+        }
+
+        .page-header { text-align: center; margin-bottom: 5rem; }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to bottom right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .page-header p { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        /* --- About Grid --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: start;
+            margin-bottom: 6rem;
+        }
+
+        .profile-card {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            position: sticky;
+            top: 100px;
+            backdrop-filter: blur(5px);
+        }
+
+        .profile-img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .stat-item h3 { font-size: 1.5rem; color: var(--accent); }
+        .stat-item span { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+
+        .about-details h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .about-details p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* --- Skills Section --- */
+        .skills-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--glass-border);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .skill-card:hover {
+            border-color: var(--secondary);
+            background: rgba(30, 41, 59, 0.8);
+            transform: translateY(-5px);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .skill-name { font-weight: 600; }
+
+        .progress-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed; top: 70px; right: -100%; width: 100%; height: calc(100vh - 70px);
+                background: var(--bg-color); flex-direction: column; justify-content: center;
+                transition: 0.3s;
+            }
+            .nav-links.nav-active { right: 0; }
+            .menu-toggle { display: block; }
+
+            .about-grid { grid-template-columns: 1fr; }
+            .profile-card { position: relative; top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. BUBBLES CONTAINER -->
+    <div class="bubbles-container" id="bubbles">
+        <!-- Bubbles JS vadda create avutundi -->
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="logo">Neelima<span style="color:white">Konda</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="skills.html">skills</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Header -->
+        <div class="page-header">
+            <h1>About Me</h1>
+            <p>Passionate about bringing ideas to life through code and motion.</p>
+        </div>
+
+        <div class="about-grid">
+            <!-- Left: Profile Card -->
+            <div class="profile-card">
+                <img src="C:\Users\neeli\OneDrive\Desktop\portfolio\neeluimage.jpg" alt="Profile" class="profile-img">
+                <h3>Neelima</h3>
+                <p style="color:var(--text-muted); margin-bottom:1.5rem;">Creative Developer & UI Designer</p>
+                
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <h3>05+</h3>
+                        <span>Years Exp.</span>
+                    </div>
+                    <div class="stat-item">
+                        <h3>50+</h3>
+                        <span>Projects</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Details -->
+            <div class="about-details">
+                <h2>Who am I?</h2>
+                <p>
+                   I am a passionate and dedicated graduate with a strong interest in web development and technology. I enjoy creating clean, responsive, and user-friendly websites using HTML, CSS, and JavaScript. I am continuously improving my technical and communication skills and looking for opportunities where I can learn, grow, and contribute effectively to an organization.
+                </p>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="skills-section">
+            <h2>Technical Skills</h2>
+            <div class="skills-container">
+                
+                <!-- Skill 1 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                        <span class="skill-name">HTML5 / CSS3</span>
+                    </div>
+                    <div class="progress-bg"><div class="progress-bar" style="width: 95%"></div></div>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fab fa-js"></i></div>
+                        <span class="skill-name">JavaScript (ES6+)</span>
+                    </div>
+                    <div class="progress-bg"><div class="progress-bar" style="width: 90%"></div></div>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fab fa-react"></i></div>
+                        <span class="skill-name">React.js</span>
+                    </div>
+                    <div class="progress-bg"><div class="progress-bar" style="width: 85%"></div></div>
+                </div>
+
+                <!-- Skill 4 -->
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fas fa-magic"></i></div>
+                        <span class="skill-name">Motion Design</span>
+                    </div>
+                    <div class="progress-bg"><div class="progress-bar" style="width: 80%"></div></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 Neelima. All rights reserved.
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // --- 1. BUBBLE GENERATION LOGIC ---
+        const bubblesContainer = document.getElementById('bubbles');
+        const bubbleCount = 20; // Bubble count adjust cheyyachu
+
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            
+            // Random Size
+            const size = Math.random() * 60 + 20 + 'px'; // 20px to 80px
+            // Random Horizontal Position
+            const left = Math.random() * 100 + '%';
+            // Random Speed (Duration)
+            const duration = Math.random() * 10 + 10 + 's'; // 10s to 20s
+            // Random Delay (Start time)
+            const delay = Math.random() * 5 + 's';
+
+            bubble.style.width = size;
+            bubble.style.height = size;
+            bubble.style.left = left;
+            bubble.style.animationDuration = duration;
+            bubble.style.animationDelay = delay;
+
+            bubblesContainer.appendChild(bubble);
+        }
+
+        // --- 2. MOBILE MENU LOGIC ---
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('nav-active');
+            const icon = menuToggle.querySelector('i');
+            if(navLinks.classList.contains('nav-active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+</html>
