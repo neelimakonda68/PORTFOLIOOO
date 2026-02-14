@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Skills | Showcase</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="swap">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --bg-color: #0f172a;
+            --bg-secondary: #1e293b;
+            --primary: #38bdf8; /* Sky Blue */
+            --secondary: #818cf8; /* Indigo */
+            --accent: #2dd4bf; /* Teal */
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; line-height: 1.2; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- 1. BUBBLES ANIMATION --- */
+        .bubbles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: linear-gradient(to top right, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: floatUp 15s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            position: relative;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background: var(--primary); transition: all 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
+
+        /* --- Main Layout --- */
+        .container {
+            padding: 8rem 5% 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-header { text-align: center; margin-bottom: 5rem; }
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to bottom right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .page-header p { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        /* --- Skills Grid --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .skill-info h3 { font-size: 1.2rem; color: var(--text-main); margin-bottom: 0.2rem; }
+        .skill-info p { font-size: 0.9rem; color: var(--text-muted); }
+
+        .progress-wrapper { margin-bottom: 1.5rem; }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            width: 0; /* JS fills this */
+            transition: width 1.5s ease-in-out;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed; top: 70px; right: -100%; width: 100%; height: calc(100vh - 70px);
+                background: var(--bg-color); flex-direction: column; justify-content: center;
+                transition: 0.3s;
+            }
+            .nav-links.nav-active { right: 0; }
+            .menu-toggle { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. BUBBLES CONTAINER -->
+    <div class="bubbles-container" id="bubbles"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="logo">Neelima<span style="color:white">Konda</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <!-- Active Page -->
+            <li><a href="skills.html" class="active">Skills</a></li>
+            <li><a href="projects.html">projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <div class="page-header">
+            <h1>Technical Skills</h1>
+            <p>My stack of technologies and tools I use to bring ideas to life.</p>
+        </div>
+
+        <div class="skills-grid">
+            
+            <!-- Skill 1: Frontend -->
+            <div class="skill-card">
+                <div class="skill-header">
+                    <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                    <div class="skill-info">
+                        <h3>HTML5 & CSS3</h3>
+                        <p>Structure & Styling</p>
+                    </div>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-label"><span>Proficiency</span><span>95%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" style="width: 0%" data-width="95%"></div></div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Expertise in semantic HTML, modern CSS (Flexbox, Grid), and responsive design principles.
+                </p>
+            </div>
+
+            <!-- Skill 2: JavaScript -->
+            <div class="skill-card">
+                <div class="skill-header">
+                    <div class="skill-icon"><i class="fab fa-js"></i></div>
+                    <div class="skill-info">
+                        <h3>JavaScript</h3>
+                        <p>Logic & Interactivity</p>
+                    </div>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-label"><span>Proficiency</span><span>90%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" style="width: 0%" data-width="90%"></div></div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Strong grasp of ES6+, DOM manipulation, asynchronous programming, and modern API usage.
+                </p>
+            </div>
+
+            <!-- Skill 3: React -->
+            <div class="skill-card">
+                <div class="skill-header">
+                    <div class="skill-icon"><i class="fab fa-react"></i></div>
+                    <div class="skill-info">
+                        <h3>React.js</h3>
+                        <p>Frontend Framework</p>
+                    </div>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-label"><span>Proficiency</span><span>85%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" style="width: 0%" data-width="85%"></div></div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Building component-based applications using Hooks, Context API, and Redux for state management.
+                </p>
+            </div>
+
+            <!-- Skill 4: Backend -->
+            <div class="skill-card">
+                <div class="skill-header">
+                    <div class="skill-icon"><i class="fab fa-node"></i></div>
+                    <div class="skill-info">
+                        <h3>Node.js</h3>
+                        <p>Server-side JS</p>
+                    </div>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-label"><span>Proficiency</span><span>75%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" style="width: 0%" data-width="75%"></div></div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Creating RESTful APIs, handling database connections, and managing server-side logic efficiently.
+                </p>
+            </div>
+
+            <!-- Skill 5: Design -->
+            <div class="skill-card">
+                <div class="skill-header">
+                    <div class="skill-icon"><i class="fab fa-figma"></i></div>
+                    <div class="skill-info">
+                        <h3>Figma & UI/UX</h3>
+                        <p>Design Prototyping</p>
+                    </div>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-label"><span>Proficiency</span><span>80%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" style="width: 0%" data-width="80%"></div></div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Designing user-centric interfaces, creating wireframes, and interactive prototypes.
+                </p>
+            </div>
+
+            <!-- Skill 6: Tools -->
+            <div class="skill-card">
+                <div class="skill-header">
+                    <div class="skill-icon"><i class="fab fa-git-alt"></i></div>
+                    <div class="skill-info">
+                        <h3>Git & Tools</h3>
+                        <p>Version Control</p>
+                    </div>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-label"><span>Proficiency</span><span>88%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" style="width: 0%" data-width="88%"></div></div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Experienced with Git workflows, Webpack, NPM, and command-line interfaces.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2026 Neelima. All rights reserved.
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // --- 1. BUBBLE GENERATION LOGIC ---
+        const bubblesContainer = document.getElementById('bubbles');
+        const bubbleCount = 20;
+
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            const size = Math.random() * 60 + 20 + 'px';
+            const left = Math.random() * 100 + '%';
+            const duration = Math.random() * 10 + 10 + 's';
+            const delay = Math.random() * 5 + 's';
+
+            bubble.style.width = size;
+            bubble.style.height = size;
+            bubble.style.left = left;
+            bubble.style.animationDuration = duration;
+            bubble.style.animationDelay = delay;
+            bubblesContainer.appendChild(bubble);
+        }
+
+        // --- 2. ANIMATE PROGRESS BARS ON LOAD ---
+        window.addEventListener('load', () => {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                bar.style.width = width;
+            });
+        });
+
+        // --- 3. MOBILE MENU ---
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('nav-active');
+            const icon = menuToggle.querySelector('i');
+            if(navLinks.classList.contains('nav-active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+</html>
